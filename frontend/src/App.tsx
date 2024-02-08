@@ -31,14 +31,13 @@ function App() {
       {shortenedUrl && (
         <div className="d-flex flex-column align-items-center">
           <h3>Your link now looks like this</h3>
-          <a href={`http://localhost:8000/${shortenedUrl}`} target="_blank">
-            {`http://localhost:8000/${shortenedUrl}`}
+          <a href={`http://localhost:8000/links/${shortenedUrl}`} target="_blank">
+            {`http://localhost:8000/links/${shortenedUrl}`}
           </a>
         </div>
       )}
     </div>
   );
 }
-
 
 export default App;

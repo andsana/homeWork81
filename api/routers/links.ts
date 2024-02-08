@@ -2,26 +2,19 @@ import { Router } from 'express';
 import { generateShortUrl } from '../utils/linkUtils';
 import Link from '../models/Links';
 import { LinkWithoutId } from '../types';
-import { Types } from 'mongoose';
 
 const linksRouter = Router();
+
 linksRouter.get('/:shortUrl', async (req, res, next) => {
   try {
-    let shortUrl: Types.ObjectId;
-    try {
-      shortUrl = new Types.ObjectId(req.params.shortUrl);
-    } catch {
-      return res.status(404).send({error: 'Wrong ObjectId!'});
-    }
-
-
-    const link = await Link.findOne({shortUrl});
+    const shortUrl = req.params.shortUrl;
+    const link = await Link.findOne({ shortUrl });
 
     if (!link) {
-      return res.status(404).send({error: 'Not found!'});
+      return res.status(404).send({ error: 'Not found!' });
     }
 
-    res.send(link);
+    res.redirect(301, link.originalUrl);
   } catch (e) {
     next(e);
   }
@@ -42,7 +35,6 @@ linksRouter.post('/', async (req, res, next) => {
     await link.save();
 
     res.send(link);
-
   } catch (e) {
     next(e);
   }
